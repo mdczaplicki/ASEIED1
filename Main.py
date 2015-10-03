@@ -93,7 +93,12 @@ def new_cluster():
 
 quantisation_error = max(minT) * 0.01
 
-while not (abs(old_c1[0] - c1[0]) < quantisation_error * 140 and abs(old_c1[1] - c1[1]) < quantisation_error and abs(old_c2[0] - c2[0]) < quantisation_error * 140 and abs(old_c2[1] - c2[1]) < quantisation_error and abs(old_c3[0] - c3[0]) < quantisation_error * 140 and abs(old_c3[1] - c3[1]) < quantisation_error):
+while not (abs(old_c1[0] - c1[0]) < quantisation_error * 140
+           and abs(old_c1[1] - c1[1]) < quantisation_error
+           and abs(old_c2[0] - c2[0]) < quantisation_error * 140
+           and abs(old_c2[1] - c2[1]) < quantisation_error
+           and abs(old_c3[0] - c3[0]) < quantisation_error * 140
+           and abs(old_c3[1] - c3[1]) < quantisation_error):
     old_c1 = c1
     old_c2 = c2
     old_c3 = c3
