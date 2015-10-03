@@ -33,10 +33,10 @@ def main(iClusters) -> None:
 
     # count for minimum and maximum values of list
     (iMinX, iMinY, iMaxX, iMaxY) = (
-            min(vPoints, key=lambda x: x[0])[0],
-            min(vPoints, key=lambda x: x[1])[1],
-            max(vPoints, key=lambda x: x[0])[0],
-            max(vPoints, key=lambda x: x[1])[1])
+            min(vPoints, key=lambda z: z[0])[0],
+            min(vPoints, key=lambda z: z[1])[1],
+            max(vPoints, key=lambda z: z[0])[0],
+            max(vPoints, key=lambda z: z[1])[1])
     # print(iMinX, iMinY, iMaxX, iMaxY)
 
     # generate random position of clusters
@@ -52,9 +52,9 @@ def main(iClusters) -> None:
         dClusterPoints.clear()
         for point in vPoints:
             vDist = []
-            for cluster in vClusters:
-                x, y = point[0] - cluster[0], point[1] - cluster[1]
-                dist = np.sqrt(x**2 + y**2)
+            for c in vClusters:
+                z, v = point[0] - c[0], point[1] - c[1]
+                dist = np.sqrt(z**2 + v**2)
                 vDist.append(dist)
 
             # cluster to which point belongs, based on minimum distance
@@ -64,11 +64,11 @@ def main(iClusters) -> None:
             assert isinstance(point, tuple)
             dClusterPoints[iBelong].append(point)
 
-        for i in range(iClusters):
+        for n in range(iClusters):
             dCP = dClusterPoints
             try:
-                vClusters[i] = (functools.reduce(lambda z, v: z + v, [d[0] for d in dCP[i]]) / len(dCP[i]),
-                                functools.reduce(lambda z, v: z + v, [d[1] for d in dCP[i]]) / len(dCP[i]))
+                vClusters[n] = (functools.reduce(lambda b, m: b + m, [d[0] for d in dCP[n]]) / len(dCP[n]),
+                                functools.reduce(lambda b, m: b + m, [d[1] for d in dCP[n]]) / len(dCP[n]))
             except TypeError:
                 print("There were probably two clusters at the same position. Restarting now...")
                 main(iClusters)
@@ -82,7 +82,6 @@ def main(iClusters) -> None:
         for i in range(iClusters):
             x, y = vOldClusters[i][0] - vClusters[i][0], vOldClusters[i][1] - vClusters[i][1]
             fDiff = np.sqrt(x**2 + y**2)
-            print(fDiff)
             if fDiff > fQuantisationError:
                 vbBreak.append(False)
                 break
