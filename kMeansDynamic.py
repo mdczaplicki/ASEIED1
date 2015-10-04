@@ -66,7 +66,6 @@ def main(iClusters, file, btn) -> None:
                 bTemp = False
             vPoints.append(tuple(float(x) for x in vLineSplit))
 
-
         # count for minimum and maximum values of list
         vClusters = [tuple(random.uniform() for _ in range(iDimensions)) for _ in range(iClusters)]
         # make old position of clusters very far away
@@ -84,11 +83,11 @@ def main(iClusters, file, btn) -> None:
                 vDist = []
 
                 for c in vClusters:
-                    vDimDist = []
-                    for dim in range(iDimensions):
-                        vDimDist.append(point[dim] - c[dim])
-                    vDimDist = [x**2 for x in vDimDist]
-                    dist = np.sqrt(sum(vDimDist))
+                    vDiDist = []
+                    for di in range(iDimensions):
+                        vDiDist.append(point[di] - c[di])
+                    vDiDist = [x**2 for x in vDiDist]
+                    dist = np.sqrt(sum(vDiDist))
                     vDist.append(dist)
 
                 # cluster to which point belongs, based on minimum distance
@@ -99,16 +98,18 @@ def main(iClusters, file, btn) -> None:
                 dClusterPoints[iBelong].append(point)
 
             for n in range(iClusters):
-                dCP = dClusterPoints
+                dCPs = dClusterPoints
                 # try:
                 #     vClusters[n] = tuple([sum([d[dim] for d in dCP[n]])/len(dCP[n]) for dim in range(iDimensions)])
                 # except ZeroDivisionError:10
                 #     # if there is no points
                 #     vClusters[n] = tuple([sum([d[dim] for d in vPoints])/len(vPoints) for dim in range(iDimensions)])
                 try:
-                    vClusters[n] = tuple([functools.reduce(lambda b, m: b + m, [d[dim] for d in dCP[n]]) / len(dCP[n]) for dim in range(iDimensions)])
+                    vClusters[n] = tuple([functools.reduce(lambda b, m: b + m, [d[di] for d in dCPs[n]]) / len(dCPs[n])
+                                          for di in range(iDimensions)])
                 except TypeError:
-                    vClusters[n] = tuple([functools.reduce(lambda b, m: b + m, [d[dim] for d in vPoints]) / len(vPoints) for dim in range(iDimensions)])
+                    vClusters[n] = tuple([functools.reduce(lambda b, m: b + m, [d[di] for d in vPoints]) / len(vPoints)
+                                          for di in range(iDimensions)])
 
         fQuantisationError = 0.001
 
@@ -131,7 +132,7 @@ def main(iClusters, file, btn) -> None:
             new_cluster()
 
         # drawing a scatter with points
-        if iDimensions ==2:
+        if iDimensions == 2:
             fig = plt.figure()
             ax = fig.add_subplot(111)
             colors = cm.rainbow(np.linspace(0, 1, iClusters))
