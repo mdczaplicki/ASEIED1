@@ -1,3 +1,4 @@
+import sys
 import functools
 import numpy as np
 import matplotlib.cm as cm
@@ -5,12 +6,36 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from numpy import random
 from mpl_toolkits.mplot3d import Axes3D
+from PyQt4 import QtGui
 
 
 __author__ = 'Marek'
 
 
 def preMain() -> None:
+    app = QtGui.QApplication(sys.argv)
+    w = QtGui.QWidget()
+    w.resize(100, 100)
+    w.move(300, 300)
+    w.setWindowTitle("K-means")
+    label = QtGui.QLabel("Clusters: ", w)
+    label.move(5, 10)
+    txtbox = QtGui.QLineEdit(w)
+    txtbox.move(50, 5)
+    txtbox.setMaximumWidth(40)
+    txtbox.setMaximumHeight(25)
+    txtbox.setMaxLength(2)
+    combo = QtGui.QComboBox(w)
+    combo.move(5, 35)
+    combo.addItem("a2.txt")
+    combo.addItem("yeast.txt")
+    btn = QtGui.QPushButton("Start", w)
+    btn.move(5, 65)
+
+    # TODO: button run a main method with arguments
+    btn.clicked.connect(main(int(str(txtbox.text())), combo.currentText()))
+    w.show()
+    sys.exit(app.exec_())
     # user provide a number of clusters
     try:
         iClusters = int(input("How many clusters?"))
@@ -22,9 +47,9 @@ def preMain() -> None:
     main(iClusters)
 
 
-def main(iClusters) -> None:
+def main(iClusters, file) -> None:
     # open file with points
-    f = open('yeast.txt', 'r')
+    f = open(file, 'r')
     vPoints = []
     iDimensions = 0
     bTemp = True
