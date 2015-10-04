@@ -15,10 +15,10 @@ def preMain() -> None:
         iClusters = int(input("How many clusters?"))
         if iClusters < 1:
             raise ValueError
-        main(iClusters)
     except ValueError:
         print("Please provide positive integer.")
         quit()
+    main(iClusters)
 
 
 def main(iClusters) -> None:
@@ -49,6 +49,10 @@ def main(iClusters) -> None:
     dClusterPoints = defaultdict(list)
 
     def new_cluster() -> None:
+        """
+
+        :rtype : None
+        """
         dClusterPoints.clear()
         for point in vPoints:
             vDist = []
@@ -95,6 +99,7 @@ def main(iClusters) -> None:
     # drawing a scatter with points
     fig = plt.figure()
     ax = fig.add_subplot(111)
+
     colors = cm.rainbow(np.linspace(0, 1, iClusters))
     for i, color in zip(range(iClusters), colors):
         ax.scatter(*zip(*dClusterPoints[i]), marker='x', color=color)

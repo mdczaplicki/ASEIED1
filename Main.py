@@ -87,7 +87,8 @@ def new_cluster():
         c1x.append(point) if dist1 < dist2 and dist1 < dist3 else c2x.append(point) if dist2 < dist3 else c3x.append(point)
         c1y.append(minT[point]) if dist1 < dist2 and dist1 < dist3 else c2y.append(minT[point]) if dist2 < dist3 else c3y.append(minT[point])
 
-    c1 = (functools.reduce(lambda x, y: x + y, c1x) / len(c1x), functools.reduce(lambda x, y: x + y, c1y) / len(c1y))
+    # c1 = (functools.reduce(lambda x, y: x + y, c1x) / len(c1x), functools.reduce(lambda x, y: x + y, c1y) / len(c1y))
+    c1 = sum(c1x)/len(c1x), sum(c1y)/len(c1y)
     c2 = (functools.reduce(lambda x, y: x + y, c2x) / len(c2x), functools.reduce(lambda x, y: x + y, c2y) / len(c2y))
     c3 = (functools.reduce(lambda x, y: x + y, c3x) / len(c3x), functools.reduce(lambda x, y: x + y, c3y) / len(c3y))
 
