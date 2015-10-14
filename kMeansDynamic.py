@@ -3,6 +3,7 @@ import functools
 import numpy as np
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
+import configparser
 from collections import defaultdict
 from numpy import random
 from mpl_toolkits.mplot3d import Axes3D
@@ -67,7 +68,19 @@ def main(iClusters, file, btn) -> None:
             vPoints.append(tuple(float(x) for x in vLineSplit))
 
         # count for minimum and maximum values of list
-        vClusters = [tuple(random.uniform() for _ in range(iDimensions)) for _ in range(iClusters)]
+        if file == 'yeast.txt':
+            vClusters = [tuple(random.uniform() for _ in range(iDimensions)) for _ in range(iClusters)]
+        elif file == 'a2.txt':
+            (iMinX, iMinY, iMaxX, iMaxY) = (
+                min(vPoints, key=lambda z: z[0])[0],
+                min(vPoints, key=lambda z: z[1])[1],
+                max(vPoints, key=lambda z: z[0])[0],
+                max(vPoints, key=lambda z: z[1])[1])
+
+        # generate random position of clusters
+            vClusters = [(random.randint(iMinX, iMaxX), random.randint(iMinY, iMaxY))
+                         for _ in range(iClusters)]
+
         # make old position of clusters very far away
         vOldClusters = [tuple([float("inf")] * iDimensions)] * iClusters
 
@@ -142,6 +155,9 @@ def main(iClusters, file, btn) -> None:
                 ax.scatter(*cluster, marker='o', color='black', s=150)
                 ax.scatter(*cluster, marker='o', color=color, s=100)
 
+            # neural network purpose
+            writeIni(dClusterPoints, iClusters)
+
         elif iDimensions == 3:
             fig = plt.figure()
             ax = fig.add_subplot(111, projection='3d')
@@ -170,6 +186,16 @@ def main(iClusters, file, btn) -> None:
         QtGui.QMessageBox.about(None, "Error", "Something went wrong. Please try again.\n %s" % e)
         btn.setEnabled(True)
 
+
+def writeIni(data, iClusters):
+    config = configparser.RawConfigParser()
+    config.add_section("cluster_points")
+    config.set('cluster_points', 'clusters_number', iClusters)
+    for i in range(len(data)):
+        config.set('cluster_points', str(i), '#'.join(map(repr, data[i])))
+
+    with open('file.ini', 'w') as outfile:
+        config.write(outfile)
 
 if __name__ == "__main__":
     preMain()

@@ -6,6 +6,9 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="matplotlib.cm.rainbow" />
+          <option value="pybrain.datasets.SupervisedDataSet" />
+          <option value="pybrain.supervised.trainers.BackpropTrainer" />
+          <option value="pybrain.structure.TanhLayer" />
         </list>
       </option>
     </inspection_tool>
