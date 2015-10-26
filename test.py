@@ -20,7 +20,7 @@ def readFromIni() -> list:
 
 
 def learnNeuralNetwork(vLearning) -> svm.SVC:
-    clf = svm.SVC()
+    clf = svm.SVC(kernel='linear')
     X = []
     y = []
     for iCluster in range(len(vLearning)):
@@ -29,7 +29,13 @@ def learnNeuralNetwork(vLearning) -> svm.SVC:
             y.append(iCluster)
 
     clf.fit(X, y)
-    print(clf.predict((37086, 24925)))
+    return clf
+
+
+def askNeuralNetwork(clf, vAsking):
+    for point in vAsking:
+        print(clf.predict(point))
+
 
 if __name__ == "__main__":
     vPoints = readFromIni()
@@ -38,4 +44,5 @@ if __name__ == "__main__":
         vLearning.append(vClusterPoints[:-5])
         vAsking.append(vClusterPoints[-5:])
 
-    learnNeuralNetwork(vLearning)
+    clf = learnNeuralNetwork(vLearning)
+    askNeuralNetwork(clf, vAsking)
